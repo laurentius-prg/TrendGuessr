@@ -8,7 +8,16 @@ namespace TrendGuessr.Tasks
 {
     public class Trend
     {
-        public string Name { get; set; }
+        public string Keyword { get; set; }
         public int PeakYear { get; set; }
+        public Trend(string keyword, int peakYear)
+        {
+            Keyword = keyword;
+            PeakYear = peakYear;
+        }
+        public override string ToString()
+        {
+            return string.Format(Keyword + " " + PeakYear);
+        }
     }
 }
