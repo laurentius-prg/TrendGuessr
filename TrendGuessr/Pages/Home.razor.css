@@ -1,0 +1,98 @@
+.hero {
+    max-width: 620px;
+    margin-bottom: 3rem;
+}
+
+.hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent-teal);
+    margin: 0 0 0.75rem;
+}
+
+.hero-title {
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    font-weight: 600;
+    line-height: 1.15;
+    margin: 0 0 1rem;
+    color: var(--color-text);
+}
+
+.hero-copy {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    margin: 0;
+}
+
+.game-card-wrap {
+    display: flex;
+}
+
+.game-card {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    background: var(--color-parchment);
+    color: var(--color-parchment-ink);
+    border: none;
+    border-radius: 14px;
+    padding: 2rem 2rem 2.25rem;
+    cursor: pointer;
+    overflow: hidden;
+    text-align: left;
+    font-family: inherit;
+    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.game-card:hover,
+.game-card:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: 0 28px 50px -18px rgba(0, 0, 0, 0.55);
+}
+
+.game-card:focus-visible {
+    outline: 2px solid var(--color-accent-amber);
+    outline-offset: 3px;
+}
+
+
+.tick-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-accent-amber);
+    order: -1;
+}
+
+.game-card-kicker {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(42, 36, 22, 0.55);
+    margin-bottom: 0.5rem;
+}
+
+.game-card-keyword {
+    font-family: var(--font-display);
+    font-size: 2.1rem;
+    font-weight: 600;
+    margin: 0 0 1.5rem;
+}
+
+.game-card-cta {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+@media (max-width: 720px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+}

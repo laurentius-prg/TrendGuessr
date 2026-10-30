@@ -1,0 +1,31 @@
+@inherits LayoutComponentBase
+
+<div class="app-shell">
+    <header class="app-header">
+        <div class="header-brand">
+            <span class="brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <line x1="2" y1="12" x2="22" y2="12" />
+                    <line x1="6" y1="8" x2="6" y2="16" />
+                    <line x1="12" y1="6" x2="12" y2="18" />
+                    <line x1="18" y1="8" x2="18" y2="16" />
+                </svg>
+            </span>
+            <div class="brand-text">
+                <span class="brand-title">TrendGuessr</span>
+                <span class="brand-subtitle">the trend-guessing game</span>
+            </div>
+        </div>
+        <nav class="header-actions">
+            <a class="streak-pill" href="/"> Home</a>
+        </nav>
+    </header>
+
+    <div class="app-body">
+        <NavMenu />
+        <main class="app-main">
+            @Body
+        </main>
+    </div>
+</div>
+

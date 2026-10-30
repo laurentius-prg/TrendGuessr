@@ -1,0 +1,237 @@
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* ---------- stat header ---------- */
+.game-header {
+    width: 100%;
+    max-width: 480px;
+}
+
+.game-stats {
+    display: flex;
+    justify-content: space-between;
+    background: var(--color-panel);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 0.9rem 1.5rem;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+}
+
+.stat-value {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+    .stat-value.accent {
+        color: var(--color-accent-amber);
+    }
+
+/* ---------- game card ---------- */
+.game-card {
+    width: 100%;
+    max-width: 480px;
+    background: var(--color-parchment);
+    color: var(--color-parchment-ink);
+    border-radius: 14px;
+    padding: 2rem 2rem 2.25rem;
+    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.round-progress {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.75rem;
+}
+
+.progress-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(42, 36, 22, 0.18);
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+    .progress-dot.active {
+        background: var(--color-accent-amber);
+        transform: scale(1.15);
+    }
+
+/* ---------- question ---------- */
+.question {
+    text-align: center;
+    margin-bottom: 2.25rem;
+}
+
+.question-small {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(42, 36, 22, 0.55);
+    margin-bottom: 0.35rem;
+}
+
+.question-term {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.question-description {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: rgba(42, 36, 22, 0.65);
+    margin-top: 0.35rem;
+}
+
+/* ---------- slider ---------- */
+.slider-container {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.year-display {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.selected-year {
+    font-family: var(--font-mono);
+    font-size: 2.6rem;
+    font-weight: 500;
+    color: var(--color-accent-teal);
+    letter-spacing: 0.02em;
+}
+
+.year-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(42, 36, 22, 0.15);
+    outline: none;
+    cursor: pointer;
+    margin-bottom: 0.6rem;
+}
+
+    .year-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--color-accent-amber);
+        border: 3px solid var(--color-parchment);
+        box-shadow: 0 0 0 1.5px rgba(42, 36, 22, 0.35);
+        cursor: pointer;
+        transition: transform 0.15s ease;
+    }
+
+        .year-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+    .year-slider::-moz-range-thumb {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--color-accent-amber);
+        border: 3px solid var(--color-parchment);
+        box-shadow: 0 0 0 1.5px rgba(42, 36, 22, 0.35);
+        cursor: pointer;
+        transition: transform 0.15s ease;
+    }
+
+        .year-slider::-moz-range-thumb:hover {
+            transform: scale(1.1);
+        }
+
+    .year-slider::-moz-range-track {
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(42, 36, 22, 0.15);
+    }
+
+/* tick marks under the slider — echoes the ruler motif on the home card */
+.year-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: rgba(42, 36, 22, 0.5);
+    padding: 0 2px;
+}
+
+/* ---------- submit ---------- */
+.submit-container {
+    width: 100%;
+}
+
+.btn {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn-primary {
+    background: var(--color-parchment-ink);
+    color: var(--color-parchment);
+}
+
+    .btn-primary:hover {
+        background: #3a3222;
+    }
+
+.btn-large {
+    width: 100%;
+    padding: 0.95rem 1.5rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.submit-btn:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 720px) {
+    .question-term {
+        font-size: 1.9rem;
+    }
+
+    .selected-year {
+        font-size: 2.1rem;
+    }
+
+    .game-stats {
+        padding: 0.75rem 1rem;
+    }
+}

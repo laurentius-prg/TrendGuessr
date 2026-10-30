@@ -1,0 +1,117 @@
+@page "/play"
+@inject NavigationManager Navigation
+@inject GameDataService GameData
+
+<PageTitle>TrendGuessr - guess the year</PageTitle>
+
+<section class="hero">
+    <div class="game-header">
+        <div class="game-stats">
+            <div class="stat">
+                <span class="stat-label">Health</span>
+                <span class="stat-value accent">@health</span>
+            </div>
+
+            <div class="stat">
+                <span class="stat-label">Multiplier</span>
+                <span class="stat-value"><a>@multiplier</a>x</span>
+            </div>
+
+            <div class="stat">
+                <span class="stat-label">Streak</span>
+                <span class="stat-value">🔥 @streak</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="game-card">
+
+        <div class="question">
+            <div class="question-small">When did</div>
+
+            <div class="question-term">
+                @currentWord
+            </div>
+
+            <div class="question-description">
+                peak in popularity?
+            </div>
+        </div>
+
+        <div class="slider-container">
+
+            <div class="year-display">
+                <span class="selected-year">@selectedYear</span>
+            </div>
+
+            <input class="year-slider"
+                   type="range"
+                   min=@minYear
+                   max=@maxYear
+                   value=@selectedYear 
+                   @oninput="OnYearChanged"/>
+
+        </div>
+
+        <div class="submit-container">
+            <button class="btn btn-primary btn-large submit-btn" @onclick="SubmitGuess" disabled="@isSubmitted">
+                @(isSubmitted ? $"Actual year: {peakYear}" : "Lock in guess")
+            </button>
+        </div>
+
+    </div>
+</section>
+
+
+@code {
+    // Stats
+    private int health = 1000;
+    private decimal multiplier = 1;
+    private int streak = 0;
+    // Trend info
+    private string currentWord = "trend";
+    private int peakYear = 2020;
+    // Year info
+    private int minYear = 2005;
+    private int maxYear = DateTime.Today.Year;
+    private int selectedYear = 2016;
+    // Submission
+    private bool isSubmitted = false;
+    private void OnYearChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var year))
+        {
+            selectedYear = year;
+        }
+    }
+    private void SubmitGuess()
+    {
+        if (isSubmitted)
+            return;
+        isSubmitted = true;
+        int minDistance = Math.Abs(selectedYear - peakYear);
+        health -= (int)Math.Ceiling(minDistance * 100 * multiplier);
+        streak++;
+        multiplier += 0.1m;
+        _ = AdvanceAfterDelay();
+    }
+
+    private async Task AdvanceAfterDelay()
+    {
+        await Task.Delay(1500);
+        if (health <= 0)
+        {
+            Navigation.NavigateTo("/results");
+            return;
+        }
+        selectedYear = 2016;
+        isSubmitted = false;
+        /* Change data from api */
+
+        Trend currentTrend = await GameData.GetRandomKeywordAsync();
+        currentWord = currentTrend.Keyword;
+        peakYear = 2020;
+
+        StateHasChanged();
+    }
+}

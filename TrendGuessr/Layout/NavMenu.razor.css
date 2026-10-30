@@ -1,0 +1,68 @@
+.sidebar {
+    width: 208px;
+    flex-shrink: 0;
+    background: var(--color-panel);
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.5rem 0.75rem;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sidebar-link:hover {
+    background: var(--color-panel-alt);
+    color: var(--color-text);
+}
+
+/* Blazor adds this class automatically to the active NavLink */
+.sidebar-link.active {
+    background: var(--color-panel-alt);
+    color: var(--color-accent-amber);
+}
+
+.link-icon {
+    width: 18px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+}
+
+.sidebar-footer {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    padding: 0 0.75rem;
+}
+
+@media (max-width: 720px) {
+    .sidebar {
+        width: 64px;
+        padding: 1.5rem 0.5rem;
+    }
+    .link-label {
+        display: none;
+    }
+    .sidebar-link {
+        justify-content: center;
+    }
+}

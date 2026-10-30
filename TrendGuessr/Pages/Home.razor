@@ -1,0 +1,30 @@
+@page "/"
+@inject NavigationManager Navigation
+
+<PageTitle>TrendGuessr - guess the year</PageTitle>
+
+<section class="hero">
+    <p class="hero-eyebrow">every keyword has a peak</p>
+    <h1 class="hero-title">When did the world<br />search for it most?</h1>
+    <p class="hero-copy">
+        You'll see a word or phrase pulled from search history. Place it on the timeline -
+        the closer to its peak year, the less health you lose.
+    </p>
+</section>
+
+<section class="game-card-wrap">
+    <button class="game-card" @onclick="StartGame">
+        <div class="game-card-body">
+            <h2 class="game-card-keyword">When did it peak?</h2>
+            <span class="game-card-kicker">Guess the year a trend was most popular.</span>
+            <span class="game-card-cta">PLAY NOW →</span>
+        </div>
+    </button>
+</section>
+
+@code {
+    private void StartGame()
+    {
+        Navigation.NavigateTo("/play");
+    }
+}
