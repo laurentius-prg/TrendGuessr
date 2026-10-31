@@ -69,8 +69,8 @@
     private decimal multiplier = 1;
     private int streak = 0;
     // Trend info
-    private string currentWord = "trend";
-    private int peakYear = 2020;
+    private string? currentWord;
+    private int peakYear;
     // Year info
     private int minYear = 2005;
     private int maxYear = DateTime.Today.Year;
@@ -96,6 +96,10 @@
         _ = AdvanceAfterDelay();
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        await GenerateTrend();
+    }
     private async Task AdvanceAfterDelay()
     {
         await Task.Delay(1500);
@@ -104,14 +108,14 @@
             Navigation.NavigateTo("/results");
             return;
         }
-        selectedYear = 2016;
-        isSubmitted = false;
-        /* Change data from api */
-
+        await GenerateTrend();
+    }
+    private async Task GenerateTrend()
+    {
         Trend currentTrend = await GameData.GetRandomKeywordAsync();
         currentWord = currentTrend.Keyword;
-        peakYear = 2020;
-
-        StateHasChanged();
+        peakYear = currentTrend.PeakYear;
+        selectedYear = 2016;
+        isSubmitted = false;
     }
 }
