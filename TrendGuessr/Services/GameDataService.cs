@@ -4,16 +4,16 @@ namespace TrendGuessr
 {
     public class GameDataService
     {
-        const string DATA_FILE = "data/trends.json";
-        private readonly HttpClient _http;
-        private List<Trend>? _cache;
+        private const string DATA_FILE = "data/trends.json";
+        private readonly HttpClient HTTP;
+        private List<Trend>? Cache;
 
-        public GameDataService(HttpClient http) => _http = http;
+        public GameDataService(HttpClient http) => HTTP = http;
 
         public async Task<Trend> GetRandomKeywordAsync()
         {
-            _cache ??= await _http.GetFromJsonAsync<List<Trend>>(DATA_FILE);
-            return _cache![Random.Shared.Next(_cache.Count)];
+            Cache ??= await HTTP.GetFromJsonAsync<List<Trend>>(DATA_FILE);
+            return Cache![Random.Shared.Next(Cache.Count)];
         }
     }
 }
