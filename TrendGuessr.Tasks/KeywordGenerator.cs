@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
@@ -139,24 +140,26 @@ namespace TrendGuessr.Tasks
         }
         public async Task<string> FetchImageURL(string keyword)
         {
-            string url = "https://en.wikipedia.org/w/api.php?" +
-                "action=query&generator=search&" +
-                $"gsrsearch={Uri.EscapeDataString(keyword)}" +
-                "&gsrlimit=1" +
-                "&prop=pageimages&piprop=thumbnail&pithumbsize=1000&format=json&formatversion=2";
-            string body = await Http.GetStringAsync(url);
-            using (JsonDocument doc = JsonDocument.Parse(body))
+            string url = "https://en.wikipedia.org/w/api.php?action=query&generator=search" +
+                $"&gsrsearch={Uri.EscapeDataString(keyword)}&gsrlimit=3" +
+                "&prop=pageimages&piprop=thumbnail&pithumbsize=1200" +
+                "&format=json&formatversion=2&origin=*";
+
+            using (JsonDocument doc = JsonDocument.Parse(await Http.GetStringAsync(url)))
             {
-                if (doc.RootElement.TryGetProperty("query", out JsonElement query))
+                if (!doc.RootElement.TryGetProperty("query", out JsonElement query))
+                    return null;
+
+                // Keep search ranking order, and take the first article that has a lead image
+                foreach (JsonElement page in query.GetProperty("pages").EnumerateArray()
+                             .OrderBy(p => p.TryGetProperty("index", out var i) ? i.GetInt32() : int.MaxValue))
                 {
-                    JsonElement page = query.GetProperty("pages")[0];
-                    if (page.TryGetProperty("thumbnail", out JsonElement thumbnail))
-                    {
-                        return thumbnail.GetProperty("source").GetString();
-                    }
+                    if (page.TryGetProperty("thumbnail", out JsonElement thumb))
+                        return thumb.GetProperty("source").GetString();
                 }
+
+                return null;
             }
-            return null;
         }
     }
 }

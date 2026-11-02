@@ -15,12 +15,14 @@ namespace TrendGuessr
         {
             if (Cache is null)
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, DATA_FILE);
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, DATA_FILE);
                 request.SetBrowserRequestCache(BrowserRequestCache.NoCache);
 
-                using var response = await HTTP.SendAsync(request);
-                response.EnsureSuccessStatusCode();
-                Cache = await response.Content.ReadFromJsonAsync<List<Trend>>();
+                using (var response = await HTTP.SendAsync(request))
+                {
+                    response.EnsureSuccessStatusCode();
+                    Cache = await response.Content.ReadFromJsonAsync<List<Trend>>();
+                }
             }
             return Cache![Random.Shared.Next(Cache.Count)];
         }
