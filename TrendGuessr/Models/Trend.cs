@@ -4,7 +4,7 @@
     {
         public string Keyword { get; set; } = "";
         public int PeakYear { get; set; }
-        //public string imageID
+        public string? ImageURL { get; set; }
 
 
     }

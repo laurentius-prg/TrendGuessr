@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
+using static System.Net.WebRequestMethods;
 
 namespace TrendGuessr.Tasks
 {
@@ -29,6 +31,7 @@ namespace TrendGuessr.Tasks
             serpApiKey = Environment.GetEnvironmentVariable("SERPAPI_KEY");
             if (string.IsNullOrEmpty(serpApiKey))
                 throw new InvalidOperationException("SERPAPI_KEY environment variable is not set.");
+            Http.DefaultRequestHeaders.UserAgent.ParseAdd("TrendGuessr/1.0 (https://github.com/laurentius-prg/TrendGuessr)");
         }
         public async Task<List<string>> GenerateKeywordsAsync()
         {
@@ -133,6 +136,27 @@ namespace TrendGuessr.Tasks
 
                 return new Trend(keyword, peakYear);
             }
+        }
+        public async Task<string> FetchImageURL(string keyword)
+        {
+            string url = "https://en.wikipedia.org/w/api.php?" +
+                "action=query&generator=search&" +
+                $"gsrsearch={Uri.EscapeDataString(keyword)}" +
+                "&gsrlimit=1" +
+                "&prop=pageimages&piprop=thumbnail&pithumbsize=1000&format=json&formatversion=2";
+            string body = await Http.GetStringAsync(url);
+            using (JsonDocument doc = JsonDocument.Parse(body))
+            {
+                if (doc.RootElement.TryGetProperty("query", out JsonElement query))
+                {
+                    JsonElement page = query.GetProperty("pages")[0];
+                    if (page.TryGetProperty("thumbnail", out JsonElement thumbnail))
+                    {
+                        return thumbnail.GetProperty("source").GetString();
+                    }
+                }
+            }
+            return null;
         }
     }
 }

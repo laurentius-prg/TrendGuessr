@@ -13,14 +13,16 @@ namespace TrendGuessr.Tasks
         {
             const string path = "../../../TrendGuessr/wwwroot/data/trends.json";
             Dictionary<string, Trend> existingTrends = Output.DeserializeTrendsFromJSON(path);
-            /*
             KeywordGenerator generator = new KeywordGenerator();
+            /*
             List<string> keywords = await generator.GenerateKeywordsAsync();
             List<Trend> trends = await generator.GenerateTrendListAsync(keywords);
             */
             List<Trend> trends = new List<Trend>
             {
-                new Trend("LOL", 2023)
+                new Trend("League of Legends", 2018),
+                new Trend("Machine Learning", 2023),
+                new Trend("AI", 2020)
             };
             foreach (Trend trend in trends)
             {
@@ -30,6 +32,7 @@ namespace TrendGuessr.Tasks
                 }
                 else
                 {
+                    trend.ImageURL = await generator.FetchImageURL(trend.Keyword);
                     existingTrends.Add(trend.Keyword, trend);
                 }
             }
