@@ -1,237 +1,196 @@
-.hero {
+/* Play.razor.css */
+
+.play {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 2rem;
+    gap: 32px;
 }
 
-/* ---------- stat header ---------- */
-.game-header {
-    width: 100%;
-    max-width: 480px;
-}
+/* Status: health bar + stats --------------------------------------------- */
 
-.game-stats {
+.health-row {
+    position: relative;
     display: flex;
-    justify-content: space-between;
-    background: var(--color-panel);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    padding: 0.9rem 1.5rem;
+    align-items: center;
+    gap: 12px;
+}
+
+.health-row .nes-progress {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+    height: 28px;
+    margin: 0;
+}
+
+.health-value {
+    min-width: 5ch;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.health-value.hit {
+    animation: hit-flash 0.6s steps(6) both;
+}
+
+.damage-pop {
+    position: absolute;
+    right: 0;
+    top: -22px;
+    font-size: 14px;
+    color: var(--danger);
+    pointer-events: none;
+    animation: damage-rise 1.3s steps(8) forwards;
+}
+
+@keyframes hit-flash {
+    0%   { color: var(--danger); transform: translateX(0); }
+    20%  { transform: translateX(-4px); }
+    40%  { transform: translateX(4px); }
+    60%  { transform: translateX(-2px); }
+    100% { color: var(--ink); transform: translateX(0); }
+}
+
+@keyframes damage-rise {
+    0%   { opacity: 0; transform: translateY(8px); }
+    15%  { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-20px); }
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 24px;
 }
 
 .stat {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0.3rem;
+    gap: 8px;
 }
 
 .stat-label {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
+    font-size: 10px;
+    color: var(--muted);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-text-muted);
 }
 
 .stat-value {
-    font-family: var(--font-display);
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--color-text);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
 }
 
-    .stat-value.accent {
-        color: var(--color-accent-amber);
-    }
+/* Question card ---------------------------------------------------------- */
 
-/* ---------- game card ---------- */
-.game-card {
-    width: 100%;
-    max-width: 480px;
-    background: var(--color-parchment);
-    color: var(--color-parchment-ink);
-    border-radius: 14px;
-    padding: 2rem 2rem 2.25rem;
-    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
+.play-card {
+    padding: 32px;
+    background: #ffffff;
+    text-align: center;
+}
+
+.question {
     display: flex;
     flex-direction: column;
-    align-items: center;
-}
-
-.round-progress {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.75rem;
-}
-
-.progress-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(42, 36, 22, 0.18);
-    transition: background 0.15s ease, transform 0.15s ease;
-}
-
-    .progress-dot.active {
-        background: var(--color-accent-amber);
-        transform: scale(1.15);
-    }
-
-/* ---------- question ---------- */
-.question {
-    text-align: center;
-    margin-bottom: 2.25rem;
+    gap: 16px;
 }
 
 .question-small {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: rgba(42, 36, 22, 0.55);
-    margin-bottom: 0.35rem;
+    font-size: 12px;
+    color: var(--muted);
 }
 
 .question-term {
-    font-family: var(--font-display);
-    font-size: 2.4rem;
-    font-weight: 700;
-    line-height: 1.1;
+    font-size: clamp(18px, 4.5vw, 28px);
+    line-height: 1.5;
+    overflow-wrap: anywhere;
 }
 
-.question-description {
-    font-family: var(--font-body);
-    font-size: 0.95rem;
-    color: rgba(42, 36, 22, 0.65);
-    margin-top: 0.35rem;
-}
+/* Year slider ------------------------------------------------------------ */
 
-/* ---------- slider ---------- */
 .slider-container {
-    width: 100%;
-    margin-bottom: 2rem;
-}
-
-.year-display {
-    text-align: center;
-    margin-bottom: 1rem;
+    margin-top: 40px;
 }
 
 .selected-year {
-    font-family: var(--font-mono);
-    font-size: 2.6rem;
-    font-weight: 500;
-    color: var(--color-accent-teal);
-    letter-spacing: 0.02em;
+    display: block;
+    margin-bottom: 20px;
+    font-size: clamp(28px, 8vw, 44px);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
 }
 
 .year-slider {
     -webkit-appearance: none;
     appearance: none;
+    display: block;
     width: 100%;
-    height: 4px;
-    border-radius: 2px;
-    background: rgba(42, 36, 22, 0.15);
-    outline: none;
+    height: 28px;
+    margin: 0;
+    background: transparent;
     cursor: pointer;
-    margin-bottom: 0.6rem;
 }
 
-    .year-slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        background: var(--color-accent-amber);
-        border: 3px solid var(--color-parchment);
-        box-shadow: 0 0 0 1.5px rgba(42, 36, 22, 0.35);
-        cursor: pointer;
-        transition: transform 0.15s ease;
-    }
+.year-slider::-webkit-slider-runnable-track {
+    height: 8px;
+    background: var(--ink);
+}
 
-        .year-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.1);
-        }
+.year-slider::-moz-range-track {
+    height: 8px;
+    background: var(--ink);
+}
 
-    .year-slider::-moz-range-thumb {
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        background: var(--color-accent-amber);
-        border: 3px solid var(--color-parchment);
-        box-shadow: 0 0 0 1.5px rgba(42, 36, 22, 0.35);
-        cursor: pointer;
-        transition: transform 0.15s ease;
-    }
+.year-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    box-sizing: border-box;
+    width: 20px;
+    height: 28px;
+    margin-top: -10px;
+    border: 4px solid var(--ink);
+    border-radius: 0;
+    background: var(--primary);
+}
 
-        .year-slider::-moz-range-thumb:hover {
-            transform: scale(1.1);
-        }
+.year-slider::-moz-range-thumb {
+    box-sizing: border-box;
+    width: 20px;
+    height: 28px;
+    border: 4px solid var(--ink);
+    border-radius: 0;
+    background: var(--primary);
+}
 
-    .year-slider::-moz-range-track {
-        height: 4px;
-        border-radius: 2px;
-        background: rgba(42, 36, 22, 0.15);
-    }
-
-/* tick marks under the slider — echoes the ruler motif on the home card */
-.year-labels {
+.slider-scale {
     display: flex;
     justify-content: space-between;
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    color: rgba(42, 36, 22, 0.5);
-    padding: 0 2px;
+    margin-top: 12px;
+    font-size: 10px;
+    color: var(--muted);
 }
 
-/* ---------- submit ---------- */
-.submit-container {
-    width: 100%;
+/* Submit ----------------------------------------------------------------- */
+
+.submit-btn {
+    margin-top: 32px;
 }
 
-.btn {
-    font-family: var(--font-mono);
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-}
-
-.btn-primary {
-    background: var(--color-parchment-ink);
-    color: var(--color-parchment);
-}
-
-    .btn-primary:hover {
-        background: #3a3222;
+@media (max-width: 640px) {
+    .play {
+        gap: 24px;
     }
 
-.btn-large {
-    width: 100%;
-    padding: 0.95rem 1.5rem;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-}
-
-.submit-btn:active {
-    transform: scale(0.98);
-}
-
-@media (max-width: 720px) {
-    .question-term {
-        font-size: 1.9rem;
+    .play-card {
+        padding: 20px 16px;
     }
 
-    .selected-year {
-        font-size: 2.1rem;
+    .damage-pop {
+        font-size: 12px;
     }
 
-    .game-stats {
-        padding: 0.75rem 1rem;
+    .submit-btn {
+        width: 100%;
     }
 }

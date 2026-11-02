@@ -4,60 +4,71 @@
 
 <PageTitle>TrendGuessr - guess the year</PageTitle>
 
-<section class="hero">
-    <div class="game-header">
-        <div class="game-stats">
-            <div class="stat">
-                <span class="stat-label">Health</span>
-                <span class="stat-value accent">@health</span>
-            </div>
+<section class="page play">
 
+    <div class="nes-container with-title play-status">
+        <p class="title">Status</p>
+
+        <div class="health-row">
+            <i class="nes-icon heart is-small" aria-hidden="true"></i>
+            <progress class="nes-progress @(health <= 300 ? "is-error" : health <= 600 ? "is-warning" : "is-success")"
+                      value="@Math.Max(0, health)"
+                      max="1000"
+                      aria-label="Health"></progress>
+            <span class="health-value @(isSubmitted && lastDamage > 0 ? "hit" : "")">@health</span>
+            @if (isSubmitted && lastDamage > 0)
+            {
+                <span class="damage-pop">-@lastDamage</span>
+            }
+        </div>
+
+        <div class="stats">
             <div class="stat">
                 <span class="stat-label">Multiplier</span>
-                <span class="stat-value"><a>@multiplier</a>x</span>
+                <span class="stat-value">@(multiplier)x</span>
             </div>
 
             <div class="stat">
                 <span class="stat-label">Streak</span>
-                <span class="stat-value">🔥 @streak</span>
+                <span class="stat-value">
+                    <i class="nes-icon star is-small" aria-hidden="true"></i>
+                    @streak
+                </span>
             </div>
         </div>
     </div>
 
-    <div class="game-card">
+    <div class="nes-container is-rounded play-card">
 
         <div class="question">
-            <div class="question-small">When did</div>
-
-            <div class="question-term">
-                @currentWord
-            </div>
-
-            <div class="question-description">
-                peak in popularity?
-            </div>
+            <p class="question-small">When did</p>
+            <p class="question-term">@currentWord</p>
+            <p class="question-small">peak in popularity?</p>
         </div>
 
         <div class="slider-container">
-
-            <div class="year-display">
-                <span class="selected-year">@selectedYear</span>
-            </div>
+            <span class="selected-year">@selectedYear</span>
 
             <input class="year-slider"
                    type="range"
                    min=@minYear
                    max=@maxYear
-                   value=@selectedYear 
-                   @oninput="OnYearChanged"/>
+                   value=@selectedYear
+                   aria-label="Guess the peak year"
+                   @oninput="OnYearChanged" />
 
+            <div class="slider-scale" aria-hidden="true">
+                <span>@minYear</span>
+                <span>@maxYear</span>
+            </div>
         </div>
 
-        <div class="submit-container">
-            <button class="btn btn-primary btn-large submit-btn" @onclick="SubmitGuess" disabled="@isSubmitted">
-                @(isSubmitted ? $"Actual year: {peakYear}" : "Lock in guess")
-            </button>
-        </div>
+        <button type="button"
+                class="nes-btn @(isSubmitted ? "is-disabled" : "is-primary") submit-btn"
+                @onclick="SubmitGuess"
+                disabled="@isSubmitted">
+            @(isSubmitted ? $"Actual year: {peakYear}" : "Lock in guess")
+        </button>
 
     </div>
 </section>
@@ -68,6 +79,7 @@
     private int health = 1000;
     private decimal multiplier = 1;
     private int streak = 0;
+    private int lastDamage;
     // Trend info
     private string? currentWord;
     private int peakYear;
@@ -89,8 +101,9 @@
         if (isSubmitted)
             return;
         isSubmitted = true;
-        int minDistance = Math.Abs(selectedYear - peakYear);
-        health -= (int)Math.Ceiling(minDistance * 100 * multiplier);
+        int distance = Math.Abs(selectedYear - peakYear);
+        lastDamage = (int)Math.Ceiling(distance * 100 * multiplier);
+        health -= lastDamage;
         streak++;
         multiplier += 0.1m;
         _ = AdvanceAfterDelay();
@@ -109,6 +122,7 @@
             return;
         }
         await GenerateTrend();
+        StateHasChanged();
     }
     private async Task GenerateTrend()
     {

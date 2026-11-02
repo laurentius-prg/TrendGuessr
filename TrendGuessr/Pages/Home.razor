@@ -3,23 +3,25 @@
 
 <PageTitle>TrendGuessr - guess the year</PageTitle>
 
-<section class="hero">
-    <p class="hero-eyebrow">every keyword has a peak</p>
-    <h1 class="hero-title">When did the world<br />search for it most?</h1>
-    <p class="hero-copy">
+<section class="page home">
+    <h1 class="home-title">When did the world search for it most?</h1>
+    <p class="home-copy">
         You'll see a word or phrase pulled from search history. Place it on the timeline -
         the closer to its peak year, the less health you lose.
     </p>
-</section>
 
-<section class="game-card-wrap">
-    <button class="game-card" @onclick="StartGame">
-        <div class="game-card-body">
-            <h2 class="game-card-keyword">When did it peak?</h2>
-            <span class="game-card-kicker">Guess the year a trend was most popular.</span>
-            <span class="game-card-cta">PLAY NOW →</span>
-        </div>
-    </button>
+    <div class="nes-container is-rounded home-card">
+        <h2 class="home-card-title">When did it peak?</h2>
+        <p class="home-card-text">Guess the year a trend was most popular.</p>
+
+        <ul class="nes-list is-disc home-rules">
+            <li>You start with 1000 health.</li>
+            <li>Every year you are off costs 100 health.</li>
+            <li>The multiplier grows after each guess.</li>
+        </ul>
+
+        <button type="button" class="nes-btn is-primary home-play" @onclick="StartGame">Play now</button>
+    </div>
 </section>
 
 @code {

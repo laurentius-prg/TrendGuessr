@@ -1,102 +1,66 @@
+/* MainLayout.razor.css */
+
 .app-shell {
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: var(--color-bg);
+    min-height: 100vh;
 }
 
+/* Header ----------------------------------------------------------------- */
+
 .app-header {
-    height: 64px;
-    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 1.5rem;
-    background: var(--color-panel);
-    border-bottom: 1px solid var(--color-border);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    gap: 16px;
+    padding: 16px 24px;
+    background: var(--ink);
+    color: #ffffff;
 }
 
-.header-brand {
+.app-brand {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 12px;
+    text-decoration: none;
 }
 
-.brand-mark {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    background: var(--color-panel-alt);
-    color: var(--color-accent-amber);
+.app-brand-title {
+    font-size: 16px;
 }
 
-.brand-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.1;
+.app-brand-subtitle {
+    font-size: 10px;
+    color: #adafbc;
 }
 
-.brand-title {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.15rem;
-    letter-spacing: 0.01em;
+.app-nav-link {
+    font-size: 12px;
+    text-decoration: none;
 }
 
-.brand-subtitle {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    color: var(--color-text-muted);
-    text-transform: lowercase;
-    letter-spacing: 0.02em;
+.app-nav-link:hover {
+    color: var(--warning);
 }
 
-.header-actions {
-    display: flex;
-    align-items: center;
-}
-
-.streak-pill {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--color-text-muted);
-    padding: 0.35rem 0.75rem;
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-}
-
-.streak-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--color-accent-teal);
-}
+/* Body ------------------------------------------------------------------- */
 
 .app-body {
     display: flex;
     flex: 1;
-    min-height: 0;
 }
 
 .app-main {
     flex: 1;
-    padding: 3rem 2.5rem 4rem;
-    max-width: 960px;
-    margin: 0 auto;
-    width: 100%;
+    min-width: 0;
 }
 
-@media (max-width: 720px) {
-    .app-main {
-        padding: 2rem 1.25rem 3rem;
+@media (max-width: 640px) {
+    .app-header {
+        padding: 12px 16px;
+    }
+
+    .app-brand-subtitle {
+        display: none;
     }
 }
