@@ -1,5 +1,3 @@
-/* Home.razor.css */
-
 .home {
     text-align: center;
 }
@@ -24,7 +22,7 @@
     color: var(--muted);
 }
 
-/* Play card -------------------------------------------------------------- */
+/* Play card */
 
 .home-card {
     margin-top: 48px;

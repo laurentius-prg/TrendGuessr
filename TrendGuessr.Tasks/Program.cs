@@ -20,9 +20,13 @@ namespace TrendGuessr.Tasks
             */
             List<Trend> trends = new List<Trend>
             {
-                new Trend("League of Legends", 2018),
-                new Trend("Machine Learning", 2023),
-                new Trend("AI", 2020)
+                new Trend("Minecraft", 2011),
+                new Trend("Terraria", 2018),
+                new Trend("AI", 2023),
+                new Trend("League of Legends", 2011),
+                new Trend("Roblox", 2020),
+                new Trend("Microsoft Teams", 2020),
+                new Trend("LOL", 2018)
             };
             foreach (Trend trend in trends)
             {

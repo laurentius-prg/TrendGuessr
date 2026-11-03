@@ -1,12 +1,10 @@
-/* Play.razor.css */
-
-.play {
+play {
     display: flex;
     flex-direction: column;
     gap: 32px;
 }
 
-/* Status: health bar + stats --------------------------------------------- */
+/* Status: health bar + stats */
 
 .health-row {
     position: relative;
@@ -83,12 +81,15 @@
     font-size: 16px;
 }
 
-/* Question card ---------------------------------------------------------- */
+/* Question card */
 
 .play-card {
     padding: 32px;
     background: #ffffff;
     text-align: center;
+}
+.play-status {
+    background: #ffffff;
 }
 
 .question {
@@ -108,7 +109,7 @@
     overflow-wrap: anywhere;
 }
 
-/* Year slider ------------------------------------------------------------ */
+/* Year slider */
 
 .slider-container {
     margin-top: 40px;
@@ -171,7 +172,7 @@
     color: var(--muted);
 }
 
-/* Submit ----------------------------------------------------------------- */
+/* Submit */
 
 .submit-btn {
     margin-top: 32px;
@@ -196,20 +197,11 @@
 }
 .play-backdrop {
     position: fixed;
-    top: 55px; /* header height */
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-    z-index: -1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    inset: 55px 0 0;
+    z-index: 0;
+    background-repeat: repeat;
+    background-position: center top;
+    background-size: 600px auto;
     opacity: 0.4;
     pointer-events: none;
 }
-
-    .play-backdrop img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-    }

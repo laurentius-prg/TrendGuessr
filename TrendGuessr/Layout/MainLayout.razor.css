@@ -1,12 +1,10 @@
-/* MainLayout.razor.css */
-
 .app-shell {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-/* Header ----------------------------------------------------------------- */
+/* Header */
 
 .app-header {
     display: flex;
@@ -43,7 +41,7 @@
     color: var(--warning);
 }
 
-/* Body ------------------------------------------------------------------- */
+/* Body */
 
 .app-body {
     display: flex;

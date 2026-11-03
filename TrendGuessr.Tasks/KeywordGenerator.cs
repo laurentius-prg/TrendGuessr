@@ -140,22 +140,34 @@ namespace TrendGuessr.Tasks
         }
         public async Task<string> FetchImageURL(string keyword)
         {
-            string url = "https://en.wikipedia.org/w/api.php?action=query&generator=search" +
-                $"&gsrsearch={Uri.EscapeDataString(keyword)}&gsrlimit=3" +
-                "&prop=pageimages&piprop=thumbnail&pithumbsize=1200" +
-                "&format=json&formatversion=2&origin=*";
+            string url = "https://commons.wikimedia.org/w/api.php?action=query" +
+                "&generator=search" +
+                $"&gsrsearch={Uri.EscapeDataString(keyword)}" +
+                "&gsrnamespace=6&gsrlimit=10&gsrwhat=text&prop=imageinfo" +
+                "&iiprop=url&iiurlwidth=1200&format=json&formatversion=2";
 
             using (JsonDocument doc = JsonDocument.Parse(await Http.GetStringAsync(url)))
             {
                 if (!doc.RootElement.TryGetProperty("query", out JsonElement query))
                     return null;
+                if (!query.TryGetProperty("pages", out JsonElement pages))
+                    return null;
 
-                // Keep search ranking order, and take the first article that has a lead image
                 foreach (JsonElement page in query.GetProperty("pages").EnumerateArray()
-                             .OrderBy(p => p.TryGetProperty("index", out var i) ? i.GetInt32() : int.MaxValue))
+                             .OrderBy(p => p.TryGetProperty("index", out var i) ? i.GetInt32() : int.MaxValue).Skip(1))
                 {
-                    if (page.TryGetProperty("thumbnail", out JsonElement thumb))
-                        return thumb.GetProperty("source").GetString();
+                    Console.WriteLine("Checking page: " + page.GetProperty("title").GetString());
+                    if (!page.TryGetProperty("imageinfo", out JsonElement imgInfo))
+                        continue;
+                    Console.WriteLine("Image info found, length: " + imgInfo.GetArrayLength());
+                    if (imgInfo.GetArrayLength() == 0)
+                        continue;
+                    Console.WriteLine("Image info first element: " + imgInfo[0].ToString());
+                    if (imgInfo[0].TryGetProperty("thumburl", out JsonElement thumbUrl))
+                        return thumbUrl.GetString();
+                    Console.WriteLine("Thumb URL not found, checking for original URL...");
+                    if (imgInfo[0].TryGetProperty("url", out JsonElement originalUrl))
+                        return originalUrl.GetString();
                 }
 
                 return null;

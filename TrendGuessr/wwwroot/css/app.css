@@ -57,7 +57,7 @@ h1:focus {
     outline-offset: 4px;
 }
 
-/* Shared page wrapper ---------------------------------------------------- */
+/* Shared page wrapper */
 
 .page {
     max-width: 720px;
@@ -65,7 +65,7 @@ h1:focus {
     padding: 40px 16px 64px;
 }
 
-/* Blazor error banner ---------------------------------------------------- */
+/* Blazor error banner */
 
 #blazor-error-ui {
     display: none;
