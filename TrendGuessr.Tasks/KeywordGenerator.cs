@@ -154,7 +154,7 @@ namespace TrendGuessr.Tasks
                     return null;
 
                 foreach (JsonElement page in query.GetProperty("pages").EnumerateArray()
-                             .OrderBy(p => p.TryGetProperty("index", out var i) ? i.GetInt32() : int.MaxValue).Skip(1))
+                             .OrderBy(p => p.TryGetProperty("index", out var i) ? i.GetInt32() : int.MaxValue))
                 {
                     Console.WriteLine("Checking page: " + page.GetProperty("title").GetString());
                     if (!page.TryGetProperty("imageinfo", out JsonElement imgInfo))
