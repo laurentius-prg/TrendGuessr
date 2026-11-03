@@ -6,6 +6,6 @@
         public int PeakYear { get; set; }
         public string? ImageURL { get; set; }
 
-
+        public Trend() { }
     }
 }

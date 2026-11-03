@@ -40,6 +40,15 @@ play {
     pointer-events: none;
     animation: damage-rise 1.3s steps(8) forwards;
 }
+.heal-pop {
+    position: absolute;
+    right: 0;
+    top: -22px;
+    font-size: 14px;
+    color: var(--success);
+    pointer-events: none;
+    animation: damage-rise 1.3s steps(8) forwards;
+}
 
 @keyframes hit-flash {
     0%   { color: var(--danger); transform: translateX(0); }

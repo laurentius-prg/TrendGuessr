@@ -19,9 +19,16 @@
                       max="1000"
                       aria-label="Health"></progress>
             <span class="health-value @(isSubmitted && lastDamage > 0 ? "hit" : "")">@health</span>
-            @if (isSubmitted && lastDamage > 0)
+            @if (isSubmitted)
             {
-                <span class="damage-pop">-@lastDamage</span>
+                if (lastDamage == 0)
+                {
+                    <span class="heal-pop">+@minDamage</span>
+                }
+                else if (lastDamage > 0) 
+                {
+                    <span class="damage-pop">-@lastDamage</span>
+                }
             }
         </div>
 
@@ -78,12 +85,13 @@
 
 
 @code {
-
     // Stats
+    private int maxHealth = 1000;
+    private int minDamage = 50;
     private int health = 1000;
+    private int lastDamage;
     private decimal multiplier = 1;
     private int streak = 0;
-    private int lastDamage;
     // Trend info
     private string? currentWord;
     private string? currentImage;
@@ -107,8 +115,18 @@
             return;
         isSubmitted = true;
         int distance = Math.Abs(selectedYear - peakYear);
-        lastDamage = (int)Math.Ceiling(distance * 100 * multiplier);
-        health -= lastDamage;
+        if (distance == 0)
+        {
+            lastDamage = 0;
+            health += minDamage;
+            if (health > maxHealth)
+                health = maxHealth;
+        }
+        else
+        {
+            lastDamage = (int)Math.Ceiling(distance * minDamage * multiplier);
+            health -= lastDamage;
+        }
         streak++;
         multiplier += 0.1m;
         _ = AdvanceAfterDelay();
