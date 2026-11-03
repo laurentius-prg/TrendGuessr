@@ -1,5 +1,6 @@
 @page "/"
 @inject NavigationManager Navigation
+@inject GameStateService GameState
 
 <PageTitle>TrendGuessr - guess the year</PageTitle>
 
@@ -25,6 +26,11 @@
 </section>
 
 @code {
+    protected override void OnInitialized()
+    {
+        if (GameState.ResultExists)
+            GameState.ResetGameState();       
+    }
     private void StartGame()
     {
         Navigation.NavigateTo("/play");

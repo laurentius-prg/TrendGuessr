@@ -1,0 +1,26 @@
+@page "/results"
+@inject NavigationManager Navigation
+@inject GameStateService GameState
+
+<PageTitle>TrendGuessr - results</PageTitle>
+
+<section class="nes-container is-rounded result-card">
+    <h1>Game over</h1>
+    <p>Streak: @GameState.Streak</p>
+    <p>Final multiplier: @(GameState.Multiplier)x</p>
+
+    <button type="button" class="nes-btn is-primary" @onclick="PlayAgain">Play again</button>
+</section>
+
+@code {
+    protected override void OnInitialized()
+    {
+        if (!GameState.ResultExists)
+            Navigation.NavigateTo("/");
+    }
+    private void PlayAgain()
+    {
+        GameState.ResetGameState();
+        Navigation.NavigateTo("/play");
+    }
+}

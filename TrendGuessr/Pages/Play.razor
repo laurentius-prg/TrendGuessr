@@ -1,6 +1,7 @@
 @page "/play"
 @inject NavigationManager Navigation
 @inject GameDataService GameData
+@inject GameStateService GameState
 
 <PageTitle>TrendGuessr - guess the year</PageTitle>
 
@@ -131,9 +132,9 @@
         multiplier += 0.1m;
         _ = AdvanceAfterDelay();
     }
-
     protected override async Task OnInitializedAsync()
     {
+        GameState.ResetGameState();
         await GenerateTrend();
     }
     private async Task AdvanceAfterDelay()
@@ -141,6 +142,7 @@
         await Task.Delay(1500);
         if (health <= 0)
         {
+            GameState.SetGameState(streak, multiplier, true);
             Navigation.NavigateTo("/results");
             return;
         }
