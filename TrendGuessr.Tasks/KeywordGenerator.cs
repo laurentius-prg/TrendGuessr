@@ -4,11 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Web.UI.WebControls;
-using static System.Net.WebRequestMethods;
 
 namespace TrendGuessr.Tasks
 {
@@ -19,8 +16,8 @@ namespace TrendGuessr.Tasks
         private static readonly string[] geminiModels = {
             "models/gemini-3.5-flash", "models/gemini-3.8-flash", "models/gemini-2.5-pro" };
         private readonly string geminiApiKey;
-        private const int MAX_ATTEMPTS = 4;
-        private const int GENERATED_KEYWORD_COUNT = 10;
+        private readonly int MAX_ATTEMPTS = 4;
+        private readonly int GENERATED_KEYWORD_COUNT = 1;
 
         private readonly string serpApiKey;
         public KeywordGenerator()
@@ -33,6 +30,19 @@ namespace TrendGuessr.Tasks
             if (string.IsNullOrEmpty(serpApiKey))
                 throw new InvalidOperationException("SERPAPI_KEY environment variable is not set.");
             Http.DefaultRequestHeaders.UserAgent.ParseAdd("TrendGuessr/1.0 (https://github.com/laurentius-prg/TrendGuessr)");
+        }
+        public KeywordGenerator(int maximumGeminiAttempts, int generatedKeywordCount)
+        {
+            Env.TraversePath().Load();
+            geminiApiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY");
+            if (string.IsNullOrEmpty(geminiApiKey))
+                throw new InvalidOperationException("GEMINI_API_KEY environment variable is not set.");
+            serpApiKey = Environment.GetEnvironmentVariable("SERPAPI_KEY");
+            if (string.IsNullOrEmpty(serpApiKey))
+                throw new InvalidOperationException("SERPAPI_KEY environment variable is not set.");
+            Http.DefaultRequestHeaders.UserAgent.ParseAdd("TrendGuessr/1.0 (https://github.com/laurentius-prg/TrendGuessr)");
+            MAX_ATTEMPTS = maximumGeminiAttempts;
+            GENERATED_KEYWORD_COUNT = generatedKeywordCount;
         }
         public async Task<List<string>> GenerateKeywordsAsync()
         {
@@ -50,25 +60,25 @@ namespace TrendGuessr.Tasks
                 Console.WriteLine(m.Name);
             }
              */
-            /* TEMPORARY TEST */ Console.WriteLine("Initiating AI");
+            /* TEST OUTPUT */ Console.WriteLine("Initiating AI");
             foreach (string geminiModel in geminiModels)
             {
                 var model = googleAI.CreateGenerativeModel(geminiModel);
-                /* TEMPORARY TEST */ Console.WriteLine("Model initiated.");
+                /* TEST OUTPUT */ Console.WriteLine("Model initiated.");
                 for (int i = 1; i <= MAX_ATTEMPTS; i++)
                 {
-                    /* TEMPORARY TEST */Console.WriteLine("Attempt " + i + ":");
+                    /* TEST OUTPUT */ Console.WriteLine("Attempt " + i + ":");
                     try
                     {
                         var response = await model.GenerateContentAsync(request);
-                        /* TEMPORARY TEST */ Console.WriteLine("Response received.");
+                        /* TEST OUTPUT */  Console.WriteLine("Response received.");
                         string text = response.Text();
-                        /* TEMPORARY TEST */ Console.WriteLine("Converted to text.");
+                        /* TEST OUTPUT */ Console.WriteLine("Converted to text.");
                         Console.WriteLine(text);
                         // Outputs list of keywords to console for verification.
                         Console.WriteLine();
                         keywords = JsonSerializer.Deserialize<List<string>>(text);
-                        /* TEMPORARY TEST */ Console.WriteLine("Converted to keywords.");
+                        /* TEST OUTPUT */  Console.WriteLine("Converted to keywords.");
                         foreach (var keyword in keywords)
                         {
                             Console.WriteLine(keyword);
@@ -96,9 +106,9 @@ namespace TrendGuessr.Tasks
 
             foreach (var keyword in keywords)
             {
-                /* TEMPORARY TEST */ Console.WriteLine("Fetching trend " + keyword + "...");
-                var trend = await FetchTrendAsync(keyword);
-                /* TEMPORARY TEST */ Console.WriteLine("Trend fetched: " + trend.ToString());
+                /* TEST OUTPUT */ Console.WriteLine("Fetching trend " + keyword + "...");
+                Trend trend = await FetchTrendAsync(keyword);
+                /* TEST OUTPUT */ Console.WriteLine("Trend fetched: " + trend.ToString());
                 if (trend != null) trends.Add(trend);   // skip bad keywords, keep the rest
             }
 
@@ -107,18 +117,26 @@ namespace TrendGuessr.Tasks
         private async Task<Trend> FetchTrendAsync(string keyword)
         {
             string url = "https://serpapi.com/search.json?engine=google_trends&q="
-                + Uri.EscapeDataString(keyword) + 
+                + Uri.EscapeDataString(keyword) +
                 "&data_type=TIMESERIES&date=all&api_key=" + serpApiKey;
-
             string body = await Http.GetStringAsync(url);
 
             using (JsonDocument doc = JsonDocument.Parse(body))
             {
+                if (doc.RootElement.TryGetProperty("error", out JsonElement error))
+                {
+                    /* TEST OUTPUT */ Console.WriteLine("root error: " + error.GetString());
+                    return null;
+                }
+                    
                 JsonElement interest, timeline;
                 if (!doc.RootElement.TryGetProperty("interest_over_time", out interest) ||
-                    !interest.TryGetProperty("timeline_date", out timeline) ||
+                    !interest.TryGetProperty("timeline_data", out timeline) ||
                     timeline.GetArrayLength() == 0)
+                {
+                    /* TEST OUTPUT */ Console.WriteLine("interest error:" + body.ToString());
                     return null;
+                }
 
                 int currentYear = DateTime.UtcNow.Year;
 
@@ -134,7 +152,7 @@ namespace TrendGuessr.Tasks
                     .OrderByDescending(g => g.Average(p => p.Value))
                     .First()
                     .Key;
-
+                /* TEST OUTPUT */ Console.WriteLine("Year fetched: " + peakYear);
                 return new Trend(keyword, peakYear);
             }
         }
@@ -153,19 +171,18 @@ namespace TrendGuessr.Tasks
                 if (!query.TryGetProperty("pages", out JsonElement pages))
                     return null;
 
-                foreach (JsonElement page in query.GetProperty("pages").EnumerateArray()
-                             .OrderBy(p => p.TryGetProperty("index", out var i) ? i.GetInt32() : int.MaxValue))
+                foreach (JsonElement page in query.GetProperty("pages").EnumerateArray())
                 {
-                    Console.WriteLine("Checking page: " + page.GetProperty("title").GetString());
+                    /* TEST OUTPUT */ Console.WriteLine("Checking page: " + page.GetProperty("title").GetString());
                     if (!page.TryGetProperty("imageinfo", out JsonElement imgInfo))
                         continue;
-                    Console.WriteLine("Image info found, length: " + imgInfo.GetArrayLength());
+                    /* TEST OUTPUT */ Console.WriteLine("Image info found, length: " + imgInfo.GetArrayLength());
                     if (imgInfo.GetArrayLength() == 0)
                         continue;
-                    Console.WriteLine("Image info first element: " + imgInfo[0].ToString());
+                    /* TEST OUTPUT */ Console.WriteLine("Image info first element: " + imgInfo[0].ToString());
                     if (imgInfo[0].TryGetProperty("thumburl", out JsonElement thumbUrl))
                         return thumbUrl.GetString();
-                    Console.WriteLine("Thumb URL not found, checking for original URL...");
+                    /* TEST OUTPUT */ Console.WriteLine("Thumb URL not found, checking for original URL...");
                     if (imgInfo[0].TryGetProperty("url", out JsonElement originalUrl))
                         return originalUrl.GetString();
                 }
