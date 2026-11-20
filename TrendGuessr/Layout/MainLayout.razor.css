@@ -12,8 +12,10 @@
     justify-content: space-between;
     gap: 16px;
     padding: 16px 24px;
-    background: var(--ink);
     color: #ffffff;
+    background-color: #212529;
+    position: relative;
+    z-index: 10;
 }
 
 .app-brand {
