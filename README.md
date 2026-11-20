@@ -83,13 +83,6 @@ Note: each run uses SerpApi quota (two requests per keyword) and Gemini quota.
 ]
 ```
 
-## Roadmap
-
-- [ ] Score by distance from the correct year
-- [ ] Show the trend chart after each guess
-- [ ] Filter out keywords without a distinct peak
-- [ ] Daily challenge mode
-
 ## Tech stack
 
 C#, .NET, Blazor WebAssembly, [NES.css](https://github.com/nostalgic-css/NES.css) for the retro UI, SerpApi (Google Trends), Gemini API via [Google_GenerativeAI](https://github.com/gunpal5/Google_GenerativeAI) for keyword generation, hosted on Vercel.
