@@ -25,19 +25,15 @@ namespace TrendGuessr.Tasks
         {
             if (File.Exists(path))
             {
-                /*
                 try
                 {
-                */
                     List<Trend> trends = JsonSerializer.Deserialize<List<Trend>>(File.ReadAllText(path));
                 return trends.ToDictionary(t => t.Keyword, t => t);
-                /*
                 }
                 catch
                 {
                     return new Dictionary<string, Trend>();
                 }
-                */
             }
             else
                 throw new FileNotFoundException($"The file at path '{path}' does not exist.");
