@@ -9,13 +9,13 @@
 
 :root {
     /* Palette: the NES.css colours on a flat paper background */
-    --paper:   #f4f1e8;
-    --ink:     #212529;
-    --muted:   #6b6b6b;
+    --paper: #f4f1e8;
+    --ink: #212529;
+    --muted: #6b6b6b;
     --primary: #209cee;
     --success: #92cc41;
     --warning: #f7d51d;
-    --danger:  #e76e55;
+    --danger: #e76e55;
 }
 
 *, *::before, *::after {
@@ -37,7 +37,6 @@ body {
     font-size: 14px;
     line-height: 1.7;
 }
-
 /* Press Start 2P has a single weight; avoid faux bold */
 h1, h2, h3, p {
     margin: 0;
