@@ -2,7 +2,7 @@
 
 A retro-styled guessing game: you see a keyword (a website, game, meme, gadget, show...) and guess the year it was most popular on Google between 2005 and today. The answers are computed from real Google Trends data, not hand-written.
 
-Play it: https://vercel.com/laurentius1/trend-guessr
+Play it: https://trend-guessr-kappa.vercel.app/
 
 ## How it works
 
